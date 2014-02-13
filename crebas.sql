@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/2/13 16:30:59                           */
+/* Created on:     2014/2/13 17:37:25                           */
 /*==============================================================*/
 
 
@@ -83,7 +83,7 @@ alter table admin comment '后台系统管理员';
 create table answer
 (
    article_id           bigint not null comment '文章id',
-   que_article_id       bigint not null comment '问题_文章id',
+   question_article_id  bigint not null comment '问题_文章id',
    primary key (article_id)
 );
 
@@ -155,8 +155,8 @@ alter table belong_to_organization comment '属于组织';
 create table block
 (
    user_id              bigint not null comment '用户id',
-   use_user_id          bigint not null comment '用户_用户id',
-   primary key (user_id, use_user_id)
+   user_id_blocked      bigint not null comment '被屏蔽用户id',
+   primary key (user_id, user_id_blocked)
 );
 
 alter table block comment '屏蔽(黑名单)';
@@ -276,10 +276,10 @@ alter table focus_on_article comment '关注文章';
 /*==============================================================*/
 create table focus_on_user
 (
-   use_user_id          bigint not null comment '用户_用户id',
+   user_id_focused      bigint not null comment '用户_用户id',
    user_id              bigint not null comment '用户id',
    user_dynamic         text comment '动态',
-   primary key (use_user_id, user_id)
+   primary key (user_id_focused, user_id)
 );
 
 alter table focus_on_user comment '关注用户';
@@ -290,7 +290,7 @@ alter table focus_on_user comment '关注用户';
 create table improvement
 (
    article_id           bigint not null comment '文章id',
-   pro_article_id       bigint not null comment '项目_文章id',
+   project_article_id   bigint not null comment '项目_文章id',
    improvement_accepted bool not null default 0 comment '完善是否被采用',
    primary key (article_id)
 );
@@ -473,7 +473,7 @@ create table user
 
 alter table user comment '用户';
 
-alter table answer add constraint FK_answer_belong_to_question foreign key (que_article_id)
+alter table answer add constraint FK_answer_belong_to_question foreign key (question_article_id)
       references question (article_id) on delete restrict on update restrict;
 
 alter table answer add constraint FK_answer_isa_article foreign key (article_id)
@@ -503,7 +503,7 @@ alter table belong_to_organization add constraint FK_belong_to_organization2 for
 alter table block add constraint FK_block foreign key (user_id)
       references user (user_id) on delete restrict on update restrict;
 
-alter table block add constraint FK_block2 foreign key (use_user_id)
+alter table block add constraint FK_block2 foreign key (user_id_blocked)
       references user (user_id) on delete restrict on update restrict;
 
 alter table collect_article add constraint FK_collect_article foreign key (article_id)
@@ -536,13 +536,13 @@ alter table focus_on_article add constraint FK_focus_on_article foreign key (art
 alter table focus_on_article add constraint FK_focus_on_article2 foreign key (user_id)
       references user (user_id) on delete restrict on update restrict;
 
-alter table focus_on_user add constraint FK_focus_on_user foreign key (use_user_id)
+alter table focus_on_user add constraint FK_focus_on_user foreign key (user_id_focused)
       references user (user_id) on delete restrict on update restrict;
 
 alter table focus_on_user add constraint FK_focus_on_user2 foreign key (user_id)
       references user (user_id) on delete restrict on update restrict;
 
-alter table improvement add constraint FK_improvement_belong_to_project foreign key (pro_article_id)
+alter table improvement add constraint FK_improvement_belong_to_project foreign key (project_article_id)
       references project (article_id) on delete restrict on update restrict;
 
 alter table improvement add constraint FK_improvement_isa_article foreign key (article_id)
