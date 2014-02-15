@@ -1,267 +1,170 @@
-/*==============================================================*/
-/* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/2/15 21:23:18                           */
-/*==============================================================*/
-
-
-drop trigger add_article_collect_number;
-
-drop trigger sub_article_collect_number;
-
-drop trigger add_article_down_number;
-
-drop trigger sub_article_down_number;
-
-drop trigger add_comment_down_number;
-
-drop trigger sub_comment_down_number;
-
-drop trigger add_article_focus_number;
-
-drop trigger sub_article_focus_number;
-
-drop trigger update_dialog;
-
-drop trigger add_article_up_number;
-
-drop trigger sub_article_up_number;
-
-drop trigger add_comment_up_number;
-
-drop trigger sub_comment_up_number;
-
-drop table if exists admin;
-
-drop table if exists answer;
-
-drop table if exists article;
-
-drop table if exists article_have_tag;
-
-drop table if exists belong_to_circle;
-
-drop table if exists belong_to_organization;
-
-drop table if exists block;
-
-drop table if exists category;
-
-drop table if exists circle;
-
-drop table if exists collect_article;
-
-drop table if exists comment;
-
-drop table if exists config;
-
-drop table if exists dialog;
-
-drop table if exists down_article;
-
-drop table if exists down_comment;
-
-drop table if exists dynamic;
-
-drop table if exists focus_on_article;
-
-drop table if exists focus_on_tag;
-
-drop table if exists focus_on_user;
-
-drop table if exists improvement;
-
-drop table if exists message;
-
-drop table if exists notice;
-
-drop table if exists organization;
-
-drop table if exists policy;
-
-drop table if exists post;
-
-drop table if exists project;
-
-drop table if exists question;
-
-drop table if exists report_article;
-
-drop table if exists report_comment;
-
-drop table if exists tag;
-
-drop table if exists up_article;
-
-drop table if exists up_comment;
-
-drop table if exists user;
 
 /*==============================================================*/
 /* Table: admin                                                 */
 /*==============================================================*/
 create table admin
 (
-   admin_id             bigint not null auto_increment comment '¹ÜÀíÔ±id',
-   admin_name           char(8) not null comment '¹ÜÀíÔ±ĞÕÃû',
-   admin_privilege      varchar(32) not null comment '¹ÜÀíÔ±È¨ÏŞ',
-   admin_passwd         char(32) not null comment '¹ÜÀíÔ±ÃÜÂë',
-   admin_time           timestamp not null default CURRENT_TIMESTAMP comment '¹ÜÀíÔ±´´½¨Ê±¼ä',
+   admin_id             bigint not null auto_increment comment 'ç®¡ç†å‘˜id',
+   admin_name           char(8) not null comment 'ç®¡ç†å‘˜å§“å',
+   admin_privilege      varchar(32) not null comment 'ç®¡ç†å‘˜æƒé™',
+   admin_passwd         char(32) not null comment 'ç®¡ç†å‘˜å¯†ç ',
+   admin_time           timestamp not null default CURRENT_TIMESTAMP comment 'ç®¡ç†å‘˜åˆ›å»ºæ—¶é—´',
    primary key (admin_id)
 );
 
-alter table admin comment 'ºóÌ¨ÏµÍ³¹ÜÀíÔ±';
+alter table admin comment 'åå°ç³»ç»Ÿç®¡ç†å‘˜';
 
 /*==============================================================*/
 /* Table: answer                                                */
 /*==============================================================*/
 create table answer
 (
-   article_id           bigint not null comment 'ÎÄÕÂid',
-   question_article_id  bigint not null comment 'ÎÊÌâ_ÎÄÕÂid',
+   article_id           bigint not null comment 'æ–‡ç« id',
+   question_article_id  bigint not null comment 'é—®é¢˜_æ–‡ç« id',
    primary key (article_id)
 );
 
-alter table answer comment '»Ø´ğ';
+alter table answer comment 'å›ç­”';
 
 /*==============================================================*/
 /* Table: article                                               */
 /*==============================================================*/
 create table article
 (
-   article_id           bigint not null auto_increment comment 'ÎÄÕÂid',
-   user_id              bigint not null comment 'ÓÃ»§id',
-   article_title        char(32) not null comment 'ÎÄÕÂ±êÌâ',
-   article_time         timestamp not null default CURRENT_TIMESTAMP comment 'ÎÄÕÂ·¢²¼Ê±¼ä',
-   article_content      text not null comment 'ÎÄÕÂÄÚÈİ',
-   article_profile      text not null comment 'ÎÄÕÂ¼ò½é',
-   article_effective    bool not null default 1 comment 'ÎÄÕÂÓĞĞ§',
-   article_draft        bool not null default 0 comment 'ÎÄÕÂÊÇ²İ¸åÂğ',
-   article_focus_number int not null default 0 comment 'ÎÄÕÂ±»¹Ø×¢µÄÊıÁ¿',
-   article_collect_number int not null default 0 comment 'ÎÄÕÂ±»ÊÕ²ØµÄÊıÁ¿',
-   article_up_number    int not null default 0 comment 'ÎÄÕÂ±»ÔŞµÄÊıÁ¿',
-   article_down_number  int not null default 0 comment 'ÎÄÕÂ±»²ÈµÄÊıÁ¿',
-   article_type         int not null comment 'ÎÄÕÂÀàĞÍ',
-   article_comment_number int not null default 0 comment 'ÎÄÕÂ×ÜÆÀÂÛÊı',
+   article_id           bigint not null auto_increment comment 'æ–‡ç« id',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
+   article_title        char(32) not null comment 'æ–‡ç« æ ‡é¢˜',
+   article_time         timestamp not null default CURRENT_TIMESTAMP comment 'æ–‡ç« å‘å¸ƒæ—¶é—´',
+   article_content      text not null comment 'æ–‡ç« å†…å®¹',
+   article_profile      text not null comment 'æ–‡ç« ç®€ä»‹',
+   article_effective    bool not null default 1 comment 'æ–‡ç« æœ‰æ•ˆ',
+   article_draft        bool not null default 0 comment 'æ–‡ç« æ˜¯è‰ç¨¿å—',
+   article_focus_number int not null default 0 comment 'æ–‡ç« è¢«å…³æ³¨çš„æ•°é‡',
+   article_collect_number int not null default 0 comment 'æ–‡ç« è¢«æ”¶è—çš„æ•°é‡',
+   article_up_number    int not null default 0 comment 'æ–‡ç« è¢«èµçš„æ•°é‡',
+   article_down_number  int not null default 0 comment 'æ–‡ç« è¢«è¸©çš„æ•°é‡',
+   article_type         int not null comment 'æ–‡ç« ç±»å‹',
+   article_comment_number int not null default 0 comment 'æ–‡ç« æ€»è¯„è®ºæ•°',
    primary key (article_id)
 );
 
-alter table article comment 'ÎÄÕÂ';
+alter table article comment 'æ–‡ç« ';
 
 /*==============================================================*/
 /* Table: article_have_tag                                      */
 /*==============================================================*/
 create table article_have_tag
 (
-   tag_id               bigint not null comment '±êÇ©id',
-   article_id           bigint not null comment 'ÎÄÕÂid',
+   tag_id               bigint not null comment 'æ ‡ç­¾id',
+   article_id           bigint not null comment 'æ–‡ç« id',
    primary key (tag_id, article_id)
 );
 
-alter table article_have_tag comment 'ÎÄÕÂ¾ßÓĞ±êÇ©';
+alter table article_have_tag comment 'æ–‡ç« å…·æœ‰æ ‡ç­¾';
 
 /*==============================================================*/
 /* Table: belong_to_circle                                      */
 /*==============================================================*/
 create table belong_to_circle
 (
-   user_id              bigint not null comment 'ÓÃ»§id',
-   circle_id            bigint not null comment 'È¦×Óid',
-   belong_to_circle_in_request bool not null default 1 comment 'ÊÇ·ñ´¦ÓÚÉêÇë×´Ì¬(in_request)',
-   belong_to_circle_info char(32) comment 'ÓÃ»§ÔÚÈ¦×ÓÖĞµÄĞÅÏ¢(µØÎ»ÀàĞÍµÈÂÒÆß°ËÔãµÄ»òĞí¿ÉÒÔÓÉÈ¦Ö÷×Ô¶¨ÒåµÄµÄ¶«Î÷)',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
+   circle_id            bigint not null comment 'åœˆå­id',
+   belong_to_circle_in_request bool not null default 1 comment 'æ˜¯å¦å¤„äºç”³è¯·çŠ¶æ€(in_request)',
+   belong_to_circle_info char(32) comment 'ç”¨æˆ·åœ¨åœˆå­ä¸­çš„ä¿¡æ¯(åœ°ä½ç±»å‹ç­‰ä¹±ä¸ƒå…«ç³Ÿçš„æˆ–è®¸å¯ä»¥ç”±åœˆä¸»è‡ªå®šä¹‰çš„çš„ä¸œè¥¿)',
    primary key (user_id, circle_id)
 );
 
-alter table belong_to_circle comment 'ÓÃ»§ÊôÓÚÈ¦×Ó';
+alter table belong_to_circle comment 'ç”¨æˆ·å±äºåœˆå­';
 
 /*==============================================================*/
 /* Table: belong_to_organization                                */
 /*==============================================================*/
 create table belong_to_organization
 (
-   organization_user_id bigint not null comment '×éÖ¯id',
-   user_id              bigint not null comment 'ÓÃ»§id',
-   belong_to_organization_in_request bool not null default 1 comment '´¦ÓÚÉêÇë×´Ì¬',
-   belong_to_organization_info char(32) comment 'ÓÃ»§ÔÚ×éÖ¯ÖĞµÄĞÅÏ¢',
+   organization_user_id bigint not null comment 'ç»„ç»‡id',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
+   belong_to_organization_in_request bool not null default 1 comment 'å¤„äºç”³è¯·çŠ¶æ€',
+   belong_to_organization_info char(32) comment 'ç”¨æˆ·åœ¨ç»„ç»‡ä¸­çš„ä¿¡æ¯',
    primary key (organization_user_id, user_id)
 );
 
-alter table belong_to_organization comment 'ÊôÓÚ×éÖ¯';
+alter table belong_to_organization comment 'å±äºç»„ç»‡';
 
 /*==============================================================*/
 /* Table: block                                                 */
 /*==============================================================*/
 create table block
 (
-   user_id              bigint not null comment 'ÓÃ»§id',
-   user_id_blocked      bigint not null comment '±»ÆÁ±ÎÓÃ»§id',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
+   user_id_blocked      bigint not null comment 'è¢«å±è”½ç”¨æˆ·id',
    primary key (user_id, user_id_blocked)
 );
 
-alter table block comment 'ÆÁ±Î(ºÚÃûµ¥)';
+alter table block comment 'å±è”½(é»‘åå•)';
 
 /*==============================================================*/
 /* Table: category                                              */
 /*==============================================================*/
 create table category
 (
-   category_id          bigint not null auto_increment comment '×éÖ¯Àà±ğid',
-   category_name        char(32) not null comment '×éÖ¯Àà±ğÃû×Ö',
-   category_priviledge  char(32) not null comment '×éÖ¯Àà±ğÈ¨ÏŞ',
-   category_profile     char(64) comment '×éÖ¯Àà±ğ¼ò½é',
-   category_standby     text comment '×éÖ¯±¸ÓÃ',
+   category_id          bigint not null auto_increment comment 'ç»„ç»‡ç±»åˆ«id',
+   category_name        char(32) not null comment 'ç»„ç»‡ç±»åˆ«åå­—',
+   category_priviledge  char(32) not null comment 'ç»„ç»‡ç±»åˆ«æƒé™',
+   category_profile     char(64) comment 'ç»„ç»‡ç±»åˆ«ç®€ä»‹',
+   category_standby     text comment 'ç»„ç»‡å¤‡ç”¨',
    primary key (category_id)
 );
 
-alter table category comment '×éÖ¯Àà±ğcategory';
+alter table category comment 'ç»„ç»‡ç±»åˆ«category';
 
 /*==============================================================*/
 /* Table: circle                                                */
 /*==============================================================*/
 create table circle
 (
-   circle_id            bigint not null auto_increment comment 'È¦×Óid',
-   user_id              bigint not null comment 'ÓÃ»§id',
-   circle_name          char(16) not null comment 'È¦×ÓÃû×Ö',
-   circle_limit         int not null default 50 comment 'È¦×ÓÈËÊıÉÏÏŞ',
-   circle_time          timestamp not null default CURRENT_TIMESTAMP comment 'È¦×Ó´´½¨Ê±¼ä',
-   circle_profile       text not null comment 'È¦×Ó¼ò½é',
-   circle_avatar_url    char(128) comment 'È¦×ÓÍ·Ïñurl',
-   circle_effective     bool not null default 1 comment 'È¦×ÓÓĞĞ§Î»',
+   circle_id            bigint not null auto_increment comment 'åœˆå­id',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
+   circle_name          char(16) not null comment 'åœˆå­åå­—',
+   circle_limit         int not null default 50 comment 'åœˆå­äººæ•°ä¸Šé™',
+   circle_time          timestamp not null default CURRENT_TIMESTAMP comment 'åœˆå­åˆ›å»ºæ—¶é—´',
+   circle_profile       text not null comment 'åœˆå­ç®€ä»‹',
+   circle_avatar_url    char(128) comment 'åœˆå­å¤´åƒurl',
+   circle_effective     bool not null default 1 comment 'åœˆå­æœ‰æ•ˆä½',
    primary key (circle_id)
 );
 
-alter table circle comment 'È¦×Ó';
+alter table circle comment 'åœˆå­';
 
 /*==============================================================*/
 /* Table: collect_article                                       */
 /*==============================================================*/
 create table collect_article
 (
-   article_id           bigint not null comment 'ÎÄÕÂid',
-   user_id              bigint not null comment 'ÓÃ»§id',
+   article_id           bigint not null comment 'æ–‡ç« id',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
    primary key (article_id, user_id)
 );
 
-alter table collect_article comment 'ÊÕ²Ø';
+alter table collect_article comment 'æ”¶è—';
 
 /*==============================================================*/
 /* Table: comment                                               */
 /*==============================================================*/
 create table comment
 (
-   comment_id           bigint not null auto_increment comment 'ÆÀÂÛid',
-   comment_id_reply_to  bigint comment '±»ÆÀÂÛid',
-   user_id              bigint not null comment 'ÓÃ»§id',
-   article_id           bigint not null comment 'ÎÄÕÂid',
-   comment_time         timestamp not null default CURRENT_TIMESTAMP comment 'ÆÀÂÛ·¢²¼Ê±¼ä',
-   comment_content      text not null comment 'ÆÀÂÛÄÚÈİ',
-   comment_up_number    int not null default 0 comment 'ÆÀÂÛÔŞµÄÊıÁ¿',
-   comment_down_number  int not null default 0 comment 'ÆÀÂÛ²ÈµÄÊıÁ¿',
-   comment_effective    bool not null default 1 comment 'ÆÀÂÛÓĞĞ§Î»',
+   comment_id           bigint not null auto_increment comment 'è¯„è®ºid',
+   comment_id_reply_to  bigint comment 'è¢«è¯„è®ºid',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
+   article_id           bigint not null comment 'æ–‡ç« id',
+   comment_time         timestamp not null default CURRENT_TIMESTAMP comment 'è¯„è®ºå‘å¸ƒæ—¶é—´',
+   comment_content      text not null comment 'è¯„è®ºå†…å®¹',
+   comment_up_number    int not null default 0 comment 'è¯„è®ºèµçš„æ•°é‡',
+   comment_down_number  int not null default 0 comment 'è¯„è®ºè¸©çš„æ•°é‡',
+   comment_effective    bool not null default 1 comment 'è¯„è®ºæœ‰æ•ˆä½',
    primary key (comment_id)
 );
 
-alter table comment comment 'ÆÀÂÛ';
+alter table comment comment 'è¯„è®º';
 
 /*==============================================================*/
 /* Table: config                                                */
@@ -276,300 +179,300 @@ create table config
    primary key (config_id)
 );
 
-alter table config comment 'ÏµÍ³ÉèÖÃ';
+alter table config comment 'ç³»ç»Ÿè®¾ç½®';
 
 /*==============================================================*/
 /* Table: dialog                                                */
 /*==============================================================*/
 create table dialog
 (
-   user_id_less         bigint not null comment 'ÓÃ»§½ÏĞ¡id',
-   user_id_more         bigint not null comment 'ÓÃ»§½Ï´óid',
-   dialog_time          timestamp not null comment '×îĞÂÏûÏ¢Ê±¼ä',
-   dialog_content       text not null comment '×îĞÂÄÚÈİ',
+   user_id_less         bigint not null comment 'ç”¨æˆ·è¾ƒå°id',
+   user_id_more         bigint not null comment 'ç”¨æˆ·è¾ƒå¤§id',
+   dialog_time          timestamp not null comment 'æœ€æ–°æ¶ˆæ¯æ—¶é—´',
+   dialog_content       text not null comment 'æœ€æ–°å†…å®¹',
    primary key (user_id_less, user_id_more)
 );
 
-alter table dialog comment '¶Ô»°±í(¼ÇÂ¼ÁË¶Ô»°Ë«·½idºÍ×îĞÂÊ±¼äÄÚÈİ)';
+alter table dialog comment 'å¯¹è¯è¡¨(è®°å½•äº†å¯¹è¯åŒæ–¹idå’Œæœ€æ–°æ—¶é—´å†…å®¹)';
 
 /*==============================================================*/
 /* Table: down_article                                          */
 /*==============================================================*/
 create table down_article
 (
-   article_id           bigint not null comment 'ÎÄÕÂid',
-   user_id              bigint not null comment 'ÓÃ»§id',
+   article_id           bigint not null comment 'æ–‡ç« id',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
    primary key (article_id, user_id)
 );
 
-alter table down_article comment '²È';
+alter table down_article comment 'è¸©';
 
 /*==============================================================*/
 /* Table: down_comment                                          */
 /*==============================================================*/
 create table down_comment
 (
-   user_id              bigint not null comment 'ÓÃ»§id',
-   comment_id           bigint not null comment 'ÆÀÂÛid',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
+   comment_id           bigint not null comment 'è¯„è®ºid',
    primary key (user_id, comment_id)
 );
 
-alter table down_comment comment '²ÈÆÀÂÛ';
+alter table down_comment comment 'è¸©è¯„è®º';
 
 /*==============================================================*/
 /* Table: dynamic                                               */
 /*==============================================================*/
 create table dynamic
 (
-   dynamic_id           bigint not null auto_increment comment '¶¯Ì¬µÄid',
-   dynamic_subject_id   bigint not null comment 'Ö÷¸ñµÄid',
-   dynamic_object_id    bigint not null comment '±ö¸ñµÄid',
-   dynamic_type         bigint not null comment '¶¯Ì¬ÀàĞÍ',
-   dynamic_time         timestamp not null comment '¶¯Ì¬·¢ÉúµÄÊ±¼ä',
+   dynamic_id           bigint not null auto_increment comment 'åŠ¨æ€çš„id',
+   dynamic_subject_id   bigint not null comment 'ä¸»æ ¼çš„id',
+   dynamic_object_id    bigint not null comment 'å®¾æ ¼çš„id',
+   dynamic_type         bigint not null comment 'åŠ¨æ€ç±»å‹',
+   dynamic_time         timestamp not null comment 'åŠ¨æ€å‘ç”Ÿçš„æ—¶é—´',
    primary key (dynamic_id)
 );
 
-alter table dynamic comment '¶¯Ì¬';
+alter table dynamic comment 'åŠ¨æ€';
 
 /*==============================================================*/
 /* Table: focus_on_article                                      */
 /*==============================================================*/
 create table focus_on_article
 (
-   article_id           bigint not null comment 'ÎÄÕÂid',
-   user_id              bigint not null comment 'ÓÃ»§id',
+   article_id           bigint not null comment 'æ–‡ç« id',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
    primary key (article_id, user_id)
 );
 
-alter table focus_on_article comment '¹Ø×¢ÎÄÕÂ';
+alter table focus_on_article comment 'å…³æ³¨æ–‡ç« ';
 
 /*==============================================================*/
 /* Table: focus_on_tag                                          */
 /*==============================================================*/
 create table focus_on_tag
 (
-   tag_id               bigint not null comment '±êÇ©id',
-   user_id              bigint not null comment 'ÓÃ»§id',
+   tag_id               bigint not null comment 'æ ‡ç­¾id',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
    primary key (tag_id, user_id)
 );
 
-alter table focus_on_tag comment '¹Ø×¢±êÇ©';
+alter table focus_on_tag comment 'å…³æ³¨æ ‡ç­¾';
 
 /*==============================================================*/
 /* Table: focus_on_user                                         */
 /*==============================================================*/
 create table focus_on_user
 (
-   user_id              bigint not null comment 'ÓÃ»§id',
-   user_id_focused      bigint not null comment '±»¹Ø×¢ÓÃ»§id',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
+   user_id_focused      bigint not null comment 'è¢«å…³æ³¨ç”¨æˆ·id',
    primary key (user_id, user_id_focused)
 );
 
-alter table focus_on_user comment '¹Ø×¢ÓÃ»§';
+alter table focus_on_user comment 'å…³æ³¨ç”¨æˆ·';
 
 /*==============================================================*/
 /* Table: improvement                                           */
 /*==============================================================*/
 create table improvement
 (
-   article_id           bigint not null comment 'ÎÄÕÂid',
-   project_article_id   bigint not null comment 'ÏîÄ¿_ÎÄÕÂid',
-   improvement_accepted bool not null default 0 comment 'ÍêÉÆÊÇ·ñ±»²ÉÓÃ',
+   article_id           bigint not null comment 'æ–‡ç« id',
+   project_article_id   bigint not null comment 'é¡¹ç›®_æ–‡ç« id',
+   improvement_accepted bool not null default 0 comment 'å®Œå–„æ˜¯å¦è¢«é‡‡ç”¨',
    primary key (article_id)
 );
 
-alter table improvement comment 'ÍêÉÆ';
+alter table improvement comment 'å®Œå–„';
 
 /*==============================================================*/
 /* Table: message                                               */
 /*==============================================================*/
 create table message
 (
-   message_id           bigint not null auto_increment comment 'Ë½ĞÅid',
-   send_user_id         bigint not null comment '·¢ËÍÕßid',
-   receive_user_id      bigint not null comment '½ÓÊÜÕßid',
-   message_content      text not null comment 'Ë½ĞÅÄÚÈİ',
-   message_time         timestamp not null default CURRENT_TIMESTAMP comment 'Ë½ĞÅ·¢ËÍÊ±¼ä',
-   message_effective    bool not null default 1 comment 'Ë½ĞÅÓĞĞ§Î»(Ä¬ÈÏÎª1,¼´ÓĞĞ§)',
-   message_read         bool not null default 0 comment 'Ë½ĞÅÒÑ¶Á(Ä¬ÈÏÎª0,¼´Î´¶Á)',
-   send_effective       bool not null default 1 comment '·¢ËÍÕßÓĞĞ§Î»',
-   receive_effective    bool not null default 1 comment '½ÓÊÕ·½ÓĞĞ§Î»',
+   message_id           bigint not null auto_increment comment 'ç§ä¿¡id',
+   send_user_id         bigint not null comment 'å‘é€è€…id',
+   receive_user_id      bigint not null comment 'æ¥å—è€…id',
+   message_content      text not null comment 'ç§ä¿¡å†…å®¹',
+   message_time         timestamp not null default CURRENT_TIMESTAMP comment 'ç§ä¿¡å‘é€æ—¶é—´',
+   message_effective    bool not null default 1 comment 'ç§ä¿¡æœ‰æ•ˆä½(é»˜è®¤ä¸º1,å³æœ‰æ•ˆ)',
+   message_read         bool not null default 0 comment 'ç§ä¿¡å·²è¯»(é»˜è®¤ä¸º0,å³æœªè¯»)',
+   send_effective       bool not null default 1 comment 'å‘é€è€…æœ‰æ•ˆä½',
+   receive_effective    bool not null default 1 comment 'æ¥æ”¶æ–¹æœ‰æ•ˆä½',
    primary key (message_id)
 );
 
-alter table message comment 'Ë½ĞÅ';
+alter table message comment 'ç§ä¿¡';
 
 /*==============================================================*/
 /* Table: notice                                                */
 /*==============================================================*/
 create table notice
 (
-   notice_id            bigint not null auto_increment comment 'ÌáĞÑid',
-   user_id              bigint not null comment 'ÓÃ»§id',
-   notice_type          int not null comment 'ÌáĞÑÀàĞÍ',
-   notice_read          bool not null default 0 comment 'ÌáĞÑÒÑ¶Á',
-   notice_content       text not null comment 'ÌáĞÑÄÚÈİ',
-   notice_time          timestamp not null default CURRENT_TIMESTAMP comment 'ÌáĞÑ²åÈëÊı¾İ¿âµÄÊ±¼ä',
-   notice_effective     bool not null default 1 comment 'ÌáĞÑÓĞĞ§',
+   notice_id            bigint not null auto_increment comment 'æé†’id',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
+   notice_type          int not null comment 'æé†’ç±»å‹',
+   notice_read          bool not null default 0 comment 'æé†’å·²è¯»',
+   notice_content       text not null comment 'æé†’å†…å®¹',
+   notice_time          timestamp not null default CURRENT_TIMESTAMP comment 'æé†’æ’å…¥æ•°æ®åº“çš„æ—¶é—´',
+   notice_effective     bool not null default 1 comment 'æé†’æœ‰æ•ˆ',
    primary key (notice_id)
 );
 
-alter table notice comment 'ÏµÍ³ÌáĞÑ';
+alter table notice comment 'ç³»ç»Ÿæé†’';
 
 /*==============================================================*/
 /* Table: organization                                          */
 /*==============================================================*/
 create table organization
 (
-   user_id              bigint not null comment 'ÓÃ»§id',
-   category_id          bigint not null comment '×éÖ¯Àà±ğid',
-   organization_customize bool not null default 0 comment '×éÖ¯Ö÷Ò³ÊÇ·ñ¶¨ÖÆ(Ä¬ÈÏÎª0,¼´²»¶¨ÖÆ)',
-   organization_certification_infomation char(64) comment '×éÖ¯ÈÏÖ¤ĞÅÏ¢(Ò»¾ä»°,Ğ¡ÓÚ64¸ö×Ö)',
-   organization_certified bool not null default 0 comment '×éÖ¯ÊÇ·ñÒÑ¾­¾­¹ıÈÏÖ¤(Ä¬ÈÏÎª0)',
-   organization_milestone text comment '×éÖ¯Àï³Ì±®¼ÇÂ¼',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
+   category_id          bigint not null comment 'ç»„ç»‡ç±»åˆ«id',
+   organization_customize bool not null default 0 comment 'ç»„ç»‡ä¸»é¡µæ˜¯å¦å®šåˆ¶(é»˜è®¤ä¸º0,å³ä¸å®šåˆ¶)',
+   organization_certification_infomation char(64) comment 'ç»„ç»‡è®¤è¯ä¿¡æ¯(ä¸€å¥è¯,å°äº64ä¸ªå­—)',
+   organization_certified bool not null default 0 comment 'ç»„ç»‡æ˜¯å¦å·²ç»ç»è¿‡è®¤è¯(é»˜è®¤ä¸º0)',
+   organization_milestone text comment 'ç»„ç»‡é‡Œç¨‹ç¢‘è®°å½•',
    primary key (user_id)
 );
 
-alter table organization comment '×éÖ¯';
+alter table organization comment 'ç»„ç»‡';
 
 /*==============================================================*/
 /* Table: policy                                                */
 /*==============================================================*/
 create table policy
 (
-   article_id           bigint not null comment 'ÎÄÕÂid',
-   policy_hits          int not null default 0 comment 'Õş²ßµã»÷Á¿',
+   article_id           bigint not null comment 'æ–‡ç« id',
+   policy_hits          int not null default 0 comment 'æ”¿ç­–ç‚¹å‡»é‡',
    primary key (article_id)
 );
 
-alter table policy comment 'Õş²ß';
+alter table policy comment 'æ”¿ç­–';
 
 /*==============================================================*/
 /* Table: post                                                  */
 /*==============================================================*/
 create table post
 (
-   article_id           bigint not null comment 'ÎÄÕÂid',
-   circle_id            bigint not null comment 'È¦×Óid',
-   post_type            int not null comment 'Ìû×ÓÀàĞÍ',
-   post_hits            bigint not null default 0 comment 'Ìû×Óµã»÷Á¿',
+   article_id           bigint not null comment 'æ–‡ç« id',
+   circle_id            bigint not null comment 'åœˆå­id',
+   post_type            int not null comment 'å¸–å­ç±»å‹',
+   post_hits            bigint not null default 0 comment 'å¸–å­ç‚¹å‡»é‡',
    primary key (article_id)
 );
 
-alter table post comment 'È¦×ÓÀïµÄÌû×Ó(post)';
+alter table post comment 'åœˆå­é‡Œçš„å¸–å­(post)';
 
 /*==============================================================*/
 /* Table: project                                               */
 /*==============================================================*/
 create table project
 (
-   article_id           bigint not null comment 'ÎÄÕÂid',
-   user_id              bigint not null comment '¹ØÁª×éÖ¯µÄuser_id',
-   project_hits         bigint not null default 0 comment 'ÏîÄ¿µã»÷Á¿',
-   project_avatar_url   char(128) not null comment 'ÏîÄ¿Í·ÏñÍ¼Æ¬',
+   article_id           bigint not null comment 'æ–‡ç« id',
+   user_id              bigint not null comment 'å…³è”ç»„ç»‡çš„user_id',
+   project_hits         bigint not null default 0 comment 'é¡¹ç›®ç‚¹å‡»é‡',
+   project_avatar_url   char(128) not null comment 'é¡¹ç›®å¤´åƒå›¾ç‰‡',
    primary key (article_id)
 );
 
-alter table project comment 'ÏîÄ¿';
+alter table project comment 'é¡¹ç›®';
 
 /*==============================================================*/
 /* Table: question                                              */
 /*==============================================================*/
 create table question
 (
-   article_id           bigint not null comment 'ÎÄÕÂid',
-   question_hits        int not null default 0 comment 'ÎÊÌâµã»÷Á¿',
+   article_id           bigint not null comment 'æ–‡ç« id',
+   question_hits        int not null default 0 comment 'é—®é¢˜ç‚¹å‡»é‡',
    primary key (article_id)
 );
 
-alter table question comment 'ÎÊÌâ';
+alter table question comment 'é—®é¢˜';
 
 /*==============================================================*/
 /* Table: report_article                                        */
 /*==============================================================*/
 create table report_article
 (
-   article_id           bigint not null comment 'ÎÄÕÂid',
-   user_id              bigint not null comment 'ÓÃ»§id',
-   report_article_type  int not null comment 'ÎÄÕÂ¾Ù±¨ÀàĞÍ',
-   report_article_content text comment 'ÎÄÕÂ¾Ù±¨ÄÚÈİ',
+   article_id           bigint not null comment 'æ–‡ç« id',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
+   report_article_type  int not null comment 'æ–‡ç« ä¸¾æŠ¥ç±»å‹',
+   report_article_content text comment 'æ–‡ç« ä¸¾æŠ¥å†…å®¹',
    primary key (article_id, user_id)
 );
 
-alter table report_article comment '¾Ù±¨ÎÄÕÂ';
+alter table report_article comment 'ä¸¾æŠ¥æ–‡ç« ';
 
 /*==============================================================*/
 /* Table: report_comment                                        */
 /*==============================================================*/
 create table report_comment
 (
-   user_id              bigint not null comment 'ÓÃ»§id',
-   comment_id           bigint not null comment 'ÆÀÂÛid',
-   report_comment_type  int not null comment 'ÆÀÂÛ¾Ù±¨ÀàĞÍ',
-   report_comment_content text comment 'ÆÀÂÛ¾Ù±¨ÄÚÈİ',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
+   comment_id           bigint not null comment 'è¯„è®ºid',
+   report_comment_type  int not null comment 'è¯„è®ºä¸¾æŠ¥ç±»å‹',
+   report_comment_content text comment 'è¯„è®ºä¸¾æŠ¥å†…å®¹',
    primary key (user_id, comment_id)
 );
 
-alter table report_comment comment '¾Ù±¨ÆÀÂÛ';
+alter table report_comment comment 'ä¸¾æŠ¥è¯„è®º';
 
 /*==============================================================*/
 /* Table: tag                                                   */
 /*==============================================================*/
 create table tag
 (
-   tag_id               bigint not null auto_increment comment '±êÇ©id',
-   tag_title            char(32) not null comment '±êÇ©±êÌâ',
-   tag_hits             bigint not null default 0 comment '±êÇ©ÈÈ¶È',
-   tag_profile          text comment '±êÇ©ĞÅÏ¢(±¸ÓÃ)',
+   tag_id               bigint not null auto_increment comment 'æ ‡ç­¾id',
+   tag_title            char(32) not null comment 'æ ‡ç­¾æ ‡é¢˜',
+   tag_hits             bigint not null default 0 comment 'æ ‡ç­¾çƒ­åº¦',
+   tag_profile          text comment 'æ ‡ç­¾ä¿¡æ¯(å¤‡ç”¨)',
    primary key (tag_id)
 );
 
-alter table tag comment '±êÇ©';
+alter table tag comment 'æ ‡ç­¾';
 
 /*==============================================================*/
 /* Table: up_article                                            */
 /*==============================================================*/
 create table up_article
 (
-   article_id           bigint not null comment 'ÎÄÕÂid',
-   user_id              bigint not null comment 'ÓÃ»§id',
+   article_id           bigint not null comment 'æ–‡ç« id',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
    primary key (article_id, user_id)
 );
 
-alter table up_article comment 'ÔŞ';
+alter table up_article comment 'èµ';
 
 /*==============================================================*/
 /* Table: up_comment                                            */
 /*==============================================================*/
 create table up_comment
 (
-   user_id              bigint not null comment 'ÓÃ»§id',
-   comment_id           bigint not null comment 'ÆÀÂÛid',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
+   comment_id           bigint not null comment 'è¯„è®ºid',
    primary key (user_id, comment_id)
 );
 
-alter table up_comment comment 'ÔŞÆÀÂÛ';
+alter table up_comment comment 'èµè¯„è®º';
 
 /*==============================================================*/
 /* Table: user                                                  */
 /*==============================================================*/
 create table user
 (
-   user_id              bigint not null auto_increment comment 'ÓÃ»§id',
-   user_time            timestamp not null default CURRENT_TIMESTAMP comment 'ÓÃ»§´´½¨Ê±¼ä',
-   user_nickname        char(16) not null comment 'ÓÃ»§êÇ³Æ',
-   user_email           char(32) not null comment 'ÓÃ»§email',
-   user_passwd          char(32) not null comment 'ÓÃ»§ÃÜÂë¹şÏ£Öµ',
-   user_profile         text not null comment 'ÓÃ»§¼ò½é',
-   user_avatar_url      char(128) not null comment 'ÓÃ»§Í·Ïñurl',
-   user_sex             char(8) not null default 'unknown' comment 'ÓÃ»§ĞÔ±ğ',
-   user_effective       bool not null default 1 comment 'ÓÃ»§ÓĞĞ§Î»',
-   user_last_time       timestamp not null default 0 comment 'ÓÃ»§×îºóÒ»´Î²Ù×÷µÄÊ±¼ä´Á(last_time)',
-   user_type            int not null comment 'ÓÃ»§Àà±ğ',
+   user_id              bigint not null auto_increment comment 'ç”¨æˆ·id',
+   user_time            timestamp not null default CURRENT_TIMESTAMP comment 'ç”¨æˆ·åˆ›å»ºæ—¶é—´',
+   user_nickname        char(16) not null comment 'ç”¨æˆ·æ˜µç§°',
+   user_email           char(32) not null comment 'ç”¨æˆ·email',
+   user_passwd          char(32) not null comment 'ç”¨æˆ·å¯†ç å“ˆå¸Œå€¼',
+   user_profile         text not null comment 'ç”¨æˆ·ç®€ä»‹',
+   user_avatar_url      char(128) not null comment 'ç”¨æˆ·å¤´åƒurl',
+   user_sex             char(8) not null default 'unknown' comment 'ç”¨æˆ·æ€§åˆ«',
+   user_effective       bool not null default 1 comment 'ç”¨æˆ·æœ‰æ•ˆä½',
+   user_last_time       timestamp not null default 0 comment 'ç”¨æˆ·æœ€åä¸€æ¬¡æ“ä½œçš„æ—¶é—´æˆ³(last_time)',
+   user_type            int not null comment 'ç”¨æˆ·ç±»åˆ«',
    primary key (user_id)
 );
 
-alter table user comment 'ÓÃ»§';
+alter table user comment 'ç”¨æˆ·';
 
 alter table answer add constraint FK_answer_belong_to_question foreign key (question_article_id)
       references question (article_id) on delete restrict on update restrict;
@@ -721,126 +624,35 @@ alter table up_comment add constraint FK_up_comment foreign key (user_id)
 alter table up_comment add constraint FK_up_comment2 foreign key (comment_id)
       references comment (comment_id) on delete restrict on update restrict;
 
-
-create trigger add_article_collect_number after insert
-on collect_article for each row
-begin
-    update article
-    set article.article_collect_number = article.article_collect_number+1
-    where article.article_id = new.article_id
-end;
-
-
-create trigger sub_article_collect_number after delete
-on collect_article for each row
-begin
-    update article
-    set article.article_collect_number = article.article_collect_number-1
-    where article.article_id = old.article_id
-end;
-
-
-create trigger add_article_down_number after insert
-on down_article for each row
-begin
-    update article
-    set article.article_down_number = article.article_down_number+1
-    where article.article_id = new.article_id
-end;
-
-
-create trigger sub_article_down_number after delete
-on down_article for each row
-begin
-    update article
-    set article.article_down_number = article.article_down_number-1
-    where article.article_id = old.article_id
-end;
-
-
-create trigger add_comment_down_number after insert
-on down_comment for each row
-begin
-    update 'comment'
-    set 'comment'.comment_down_number = 'comment'.comment_down_number+1
-    where 'comment'.comment_id = new.comment_id
-end;
-
-
-create trigger sub_comment_down_number after delete
-on down_comment for each row
-begin
-    update 'comment'
-    set 'comment'.comment_down_number = 'comment'.comment_down_number-1
-    where 'comment'.comment_id = old.comment_id
-end;
-
-
-create trigger add_article_focus_number after insert
-on focus_on_article for each row
-begin
-    update article
-    set article.article_focus_number = article.article_focus_number+1
-    where article.article_id = new.article_id
-end;
-
-
-create trigger sub_article_focus_number after delete
-on focus_on_article for each row
-begin
-    update article
-    set article.article_focus_number = article.article_focus_number-1
-    where article.article_id = old.article_id
-end;
-
-
-create trigger update_dialog after insert
-on message for each row
-begin
-    set @l=if(new.send_user_id<new.receive_user_id,
-              new.send_user_id,new.receive_user_id);
-    set @m=if(new.send_user_id>new.receive_user_id,
-              new.send_user_id,new.receive_user_id);
-              
-    insert into dialog(dialog_time,dialog_content,user_id_less,user_id_more)
-    value(new.message_time, new.message_content, @l, @m)
-    on duplicate key update dialog_time=new.message_time,
-        dialog.dialog_content=new.message_content
-end;
-
-
-create trigger add_article_up_number after insert
-on up_article for each row
-begin
-    update article
-    set article.article_up_number = article.article_up_number+1
-    where article.article_id = new.article_id
-end;
-
-
-create trigger sub_article_up_number after delete
-on up_article for each row
-begin
-    update article
-    set article.article_up_number = article.article_up_number-1
-    where article.article_id = old.article_id
-end;
-
-
-create trigger add_comment_up_number after insert
-on up_comment for each row
-begin
-    update 'comment'
-    set 'comment'.comment_up_number = 'comment'.comment_up_number+1
-    where 'comment'.comment_id = new.comment_id
-end;
-
-
-create trigger sub_comment_up_number after delete
-on up_comment for each row
-begin
-    update 'comment'
-    set 'comment'.comment_up_number = 'comment'.comment_up_number-1
-    where 'comment'.comment_id = old.comment_id
-end;
-
+ALTER TABLE `admin`                    AUTO_INCREMENT =  1125899906842625;    -- 1 + 1  * (2^50)
+ALTER TABLE `answer`                   AUTO_INCREMENT =  2251799813685249;    -- 1 + 2  * (2^50)
+ALTER TABLE `article`                  AUTO_INCREMENT =  3377699720527873;    -- 1 + 3  * (2^50)
+ALTER TABLE `block`                    AUTO_INCREMENT =  4503599627370497;    -- 1 + 4  * (2^50)
+ALTER TABLE `category`                 AUTO_INCREMENT =  5629499534213121;    -- 1 + 5  * (2^50)
+ALTER TABLE `circle`                   AUTO_INCREMENT =  6755399441055745;    -- 1 + 6  * (2^50)
+ALTER TABLE `comment`                  AUTO_INCREMENT =  7881299347898369;    -- 1 + 7  * (2^50)
+ALTER TABLE `config`                   AUTO_INCREMENT =  9007199254740993;    -- 1 + 8  * (2^50)
+ALTER TABLE `dialog`                   AUTO_INCREMENT = 10133099161583617;    -- 1 + 9  * (2^50)
+ALTER TABLE `dynamic`                  AUTO_INCREMENT = 11258999068426241;    -- 1 + 10 * (2^50)
+ALTER TABLE `improvement`              AUTO_INCREMENT = 12384898975268865;    -- 1 + 11 * (2^50)
+ALTER TABLE `message`                  AUTO_INCREMENT = 13510798882111489;    -- 1 + 12 * (2^50)
+ALTER TABLE `notice`                   AUTO_INCREMENT = 14636698788954113;    -- 1 + 13 * (2^50)
+ALTER TABLE `organization`             AUTO_INCREMENT = 15762598695796737;    -- 1 + 14 * (2^50)
+ALTER TABLE `policy`                   AUTO_INCREMENT = 16888498602639361;    -- 1 + 15 * (2^50)
+ALTER TABLE `post`                     AUTO_INCREMENT = 18014398509481985;    -- 1 + 16 * (2^50)
+ALTER TABLE `project`                  AUTO_INCREMENT = 19140298416324609;    -- 1 + 17 * (2^50)
+ALTER TABLE `question`                 AUTO_INCREMENT = 20266198323167233;    -- 1 + 18 * (2^50)
+ALTER TABLE `tag`                      AUTO_INCREMENT = 21392098230009857;    -- 1 + 19 * (2^50)
+--  AUTO_INCREMENT = 22517998136852481;    -- 1 + 20 * (2^50)
+--  AUTO_INCREMENT = 23643898043695105;    -- 1 + 21 * (2^50)
+--  AUTO_INCREMENT = 24769797950537729;    -- 1 + 22 * (2^50)
+--  AUTO_INCREMENT = 25895697857380353;    -- 1 + 23 * (2^50)
+--  AUTO_INCREMENT = 27021597764222977;    -- 1 + 24 * (2^50)
+--  AUTO_INCREMENT = 28147497671065601;    -- 1 + 25 * (2^50)
+--  AUTO_INCREMENT = 29273397577908225;    -- 1 + 26 * (2^50)
+--  AUTO_INCREMENT = 30399297484750849;    -- 1 + 27 * (2^50)
+--  AUTO_INCREMENT = 31525197391593473;    -- 1 + 28 * (2^50)
+--  AUTO_INCREMENT = 32651097298436097;    -- 1 + 29 * (2^50)
+--  AUTO_INCREMENT = 33776997205278721;    -- 1 + 30 * (2^50)
+--  AUTO_INCREMENT = 34902897112121345;    -- 1 + 31 * (2^50)
+--  AUTO_INCREMENT = 36028797018963969;    -- 1 + 32 * (2^50) 
