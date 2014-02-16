@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/2/15 21:23:18                           */
+/* Created on:     2014/2/16 14:43:23                           */
 /*==============================================================*/
 
 
@@ -287,6 +287,7 @@ create table dialog
    user_id_more         bigint not null comment '用户较大id',
    dialog_time          timestamp not null comment '最新消息时间',
    dialog_content       text not null comment '最新内容',
+   dialog_effective     bool not null default 1,
    primary key (user_id_less, user_id_more)
 );
 
@@ -564,7 +565,7 @@ create table user
    user_avatar_url      char(128) not null comment '用户头像url',
    user_sex             char(8) not null default 'unknown' comment '用户性别',
    user_effective       bool not null default 1 comment '用户有效位',
-   user_last_time       timestamp not null default 0 comment '用户最后一次操作的时间戳(last_time)',
+   user_last_time       timestamp not null default '0' comment '用户最后一次操作的时间戳(last_time)',
    user_type            int not null comment '用户类别',
    primary key (user_id)
 );

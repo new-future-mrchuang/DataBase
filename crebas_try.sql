@@ -190,6 +190,7 @@ create table dialog
    user_id_more         bigint not null comment '用户较大id',
    dialog_time          timestamp not null comment '最新消息时间',
    dialog_content       text not null comment '最新内容',
+   dialog_effective     bool not null default 1,
    primary key (user_id_less, user_id_more)
 );
 
