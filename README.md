@@ -16,15 +16,15 @@
 ### 简单说明
 这次的模型采用了继承层次进行设计,项目政策等类似的表都通过继承"文章"来实现.  
 具体来说,"文章"中有一些文章共有的属性,然后子表(项目政策等)只包含特有属性,两者通过article_id联系  
-文章的子表有:项目project,政策policy,完善improvement,问题question,回答answer,圈子中的帖子post   
+文章的子表有:项目project,政策policy,问题question,圈子中的帖子post   
 组织和用户的关系也类似,组织是用户的子表(因为组织支持所有用户操作,所以设计成子表比较方便)  
 组织特有的东西在organization表中.     个人用户的信息全部存放在user表中,但是组织用户的信息存放在user和organization两张表中   
-模型能够将所有东西的id进行区分,每条记录对应唯一id,具体请参见crebas.sql末尾
+模型能够将所有东西的id进行区分,每条记录对应唯一id,具体请参见crebas.sql末尾.
+目前id的设计是按照64位进行处理的,需要改成32位.
 
 ========================================================
 ### 每张表说明
-- admin                     后台管理员表,id从
-- answer                    回答,文章的一种,每个回答都与一个问题相对应
+- admin                     后台管理员表
 - article                   文章(项目政策问题回答完善帖子的父表),用户可以对所有文章进行:赞踩举报发表收藏关注
 - article_have_tag          记录文章有哪些标签
 - belong_to_circle          记录用户属于什么圈子,其中字段含义请见注释
@@ -42,7 +42,6 @@
 - focus_on_article          记录谁关注了哪篇文章.
 - focus_on_user             记录谁关注了谁.
 - focus_on_tag              记录谁关注了什么标签.
-- improvement               完善,每个完善对应一个项目
 - message                   私信,其中的有效位用于屏蔽
 - notice                    系统消息(系统提醒),系统发给用户的提醒
 - organization              组织,是用户的子类表,customize是增值服务部分,这部分注释比较清楚了
@@ -56,6 +55,8 @@
 - up_article                用户对文章点赞的记录
 - up_comment                用户对评论点赞的记录
 - user                      用户,目前没有加入个人用户的详细信息
+- person                    个人用户的详细信息
+- validate                  记录每个用户的验证密码
 
 ### 每个触发器的说明
 - add_article_collect_number(sub_article_collect_number)
@@ -65,4 +66,6 @@
 - 余下类似,我就不一一解释了,都是以此类推,除了:
 - update_dialog
   每次有新的私信就更新或者插入dialog表相关的记录
+- add_article_comment_number
+  注意没有与之相对的sub触发器!!sub这部分需要在php中实现!!
   

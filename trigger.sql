@@ -1,6 +1,5 @@
 delimiter //;
 
-
 create trigger add_article_collect_number after insert
 on collect_article for each row
 begin
@@ -16,6 +15,15 @@ begin
     update article
     set article.article_collect_number = article.article_collect_number-1
     where article.article_id = old.article_id
+end;//
+
+
+create trigger add_article_comment_number after insert
+on comment for each row
+begin
+    update article
+    set article.article_comment_number = article.article_comment_number+1
+    where article.article_id = new.article_id
 end;//
 
 
