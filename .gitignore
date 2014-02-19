@@ -15,6 +15,7 @@ local.properties
 .classpath
 .settings/
 .loadpath
+init.sql
 
 # External tool builders
 .externalToolBuilders/
