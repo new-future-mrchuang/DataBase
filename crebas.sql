@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/2/19 19:34:51                           */
+/* Created on:     2014/2/19 20:12:44                           */
 /*==============================================================*/
 
 
@@ -117,6 +117,7 @@ create table article
    article_type         int not null comment '文章类型',
    article_comment_number int not null default 0 comment '文章总评论数',
    article_hits         int not null default 0 comment '文章点击量',
+   article_tags         text,
    primary key (article_id)
 );
 

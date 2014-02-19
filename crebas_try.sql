@@ -34,6 +34,7 @@ create table article
    article_type         int not null comment '文章类型',
    article_comment_number int not null default 0 comment '文章总评论数',
    article_hits         int not null default 0 comment '文章点击量',
+   article_tags         text,   
    primary key (article_id)
 );
 
