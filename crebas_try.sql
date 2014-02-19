@@ -1,4 +1,4 @@
-
+﻿
 /*==============================================================*/
 /* Table: admin                                                 */
 /*==============================================================*/
@@ -60,6 +60,7 @@ create table belong_to_circle
    circle_id            int not null comment '圈子id',
    belong_to_circle_in_request bool not null default 1 comment '是否处于申请状态(in_request)',
    belong_to_circle_info char(32) comment '用户在圈子中的信息(地位类型等乱七八糟的或许可以由圈主自定义的的东西)',
+   belong_time          timestamp not null default CURRENT_TIMESTAMP,
    primary key (user_id, circle_id)
 );
 
@@ -119,6 +120,7 @@ create table circle
    circle_profile       text not null comment '圈子简介',
    circle_avatar_url    char(128) comment '圈子头像url',
    circle_effective     bool not null default 1 comment '圈子有效位',
+   circle_number        int not null default 1,
    primary key (circle_id)
 );
 
@@ -466,8 +468,8 @@ create table user
    user_nickname        char(16) not null comment '用户昵称(名称)',
    user_email           char(32) not null comment '用户email',
    user_passwd          char(32) not null comment '用户密码哈希值',
-   user_profile         text not null comment '用户简介',
-   user_avatar_url      char(128) not null comment '用户头像url',
+   user_profile         text comment '用户简介',
+   user_avatar_url      char(128) comment '用户头像url',
    user_effective       bool not null default 1 comment '用户有效位',
    user_last_time       timestamp not null default 0 comment '用户最后一次操作的时间戳(last_time)',
    user_type            int not null default 0 comment '用户类别',

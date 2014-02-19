@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/2/18 22:43:23                           */
+/* Created on:     2014/2/19 19:34:51                           */
 /*==============================================================*/
 
 
@@ -8,29 +8,11 @@ drop trigger add_article_collect_number;
 
 drop trigger sub_article_collect_number;
 
-drop trigger add_article_comment_number;
-
-drop trigger add_article_down_number;
-
-drop trigger sub_article_down_number;
-
-drop trigger add_comment_down_number;
-
-drop trigger sub_comment_down_number;
-
 drop trigger add_article_focus_number;
 
 drop trigger sub_article_focus_number;
 
 drop trigger update_dialog;
-
-drop trigger add_article_up_number;
-
-drop trigger sub_article_up_number;
-
-drop trigger add_comment_up_number;
-
-drop trigger sub_comment_up_number;
 
 drop table if exists admin;
 
@@ -161,6 +143,7 @@ create table belong_to_circle
    circle_id            int not null comment '圈子id',
    belong_to_circle_in_request bool not null default 1 comment '是否处于申请状态(in_request)',
    belong_to_circle_info char(32) comment '用户在圈子中的信息(地位类型等乱七八糟的或许可以由圈主自定义的的东西)',
+   belong_time          timestamp not null default CURRENT_TIMESTAMP,
    primary key (user_id, circle_id)
 );
 
@@ -220,6 +203,7 @@ create table circle
    circle_profile       text not null comment '圈子简介',
    circle_avatar_url    char(128) comment '圈子头像url',
    circle_effective     bool not null default 1 comment '圈子有效位',
+   circle_number        int not null default 1,
    primary key (circle_id)
 );
 
@@ -567,8 +551,8 @@ create table user
    user_nickname        char(16) not null comment '用户昵称(名称)',
    user_email           char(32) not null comment '用户email',
    user_passwd          char(32) not null comment '用户密码哈希值',
-   user_profile         text not null comment '用户简介',
-   user_avatar_url      char(128) not null comment '用户头像url',
+   user_profile         text comment '用户简介',
+   user_avatar_url      char(128) comment '用户头像url',
    user_effective       bool not null default 1 comment '用户有效位',
    user_last_time       timestamp not null default '0' comment '用户最后一次操作的时间戳(last_time)',
    user_type            int not null default 0 comment '用户类别',
@@ -757,51 +741,6 @@ begin
 end;
 
 
-create trigger add_article_comment_number after insert
-on comment for each row
-begin
-    update article
-    set article.article_comment_number = article.article_comment_number+1
-    where article.article_id = new.article_id
-end;
-
-
-create trigger add_article_down_number after insert
-on down_article for each row
-begin
-    update article
-    set article.article_down_number = article.article_down_number+1
-    where article.article_id = new.article_id
-end;
-
-
-create trigger sub_article_down_number after delete
-on down_article for each row
-begin
-    update article
-    set article.article_down_number = article.article_down_number-1
-    where article.article_id = old.article_id
-end;
-
-
-create trigger add_comment_down_number after insert
-on down_comment for each row
-begin
-    update 'comment'
-    set 'comment'.comment_down_number = 'comment'.comment_down_number+1
-    where 'comment'.comment_id = new.comment_id
-end;
-
-
-create trigger sub_comment_down_number after delete
-on down_comment for each row
-begin
-    update 'comment'
-    set 'comment'.comment_down_number = 'comment'.comment_down_number-1
-    where 'comment'.comment_id = old.comment_id
-end;
-
-
 create trigger add_article_focus_number after insert
 on focus_on_article for each row
 begin
@@ -832,41 +771,5 @@ begin
     value(new.message_time, new.message_content, @l, @m)
     on duplicate key update dialog_time=new.message_time,
         dialog.dialog_content=new.message_content
-end;
-
-
-create trigger add_article_up_number after insert
-on up_article for each row
-begin
-    update article
-    set article.article_up_number = article.article_up_number+1
-    where article.article_id = new.article_id
-end;
-
-
-create trigger sub_article_up_number after delete
-on up_article for each row
-begin
-    update article
-    set article.article_up_number = article.article_up_number-1
-    where article.article_id = old.article_id
-end;
-
-
-create trigger add_comment_up_number after insert
-on up_comment for each row
-begin
-    update 'comment'
-    set 'comment'.comment_up_number = 'comment'.comment_up_number+1
-    where 'comment'.comment_id = new.comment_id
-end;
-
-
-create trigger sub_comment_up_number after delete
-on up_comment for each row
-begin
-    update 'comment'
-    set 'comment'.comment_up_number = 'comment'.comment_up_number-1
-    where 'comment'.comment_id = old.comment_id
 end;
 

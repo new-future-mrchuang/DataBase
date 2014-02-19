@@ -58,14 +58,10 @@
 - person                    个人用户的详细信息
 - validate                  记录每个用户的验证密码
 
-### 每个触发器的说明
+### 每个触发器的说明(一共就5个触发器了现在,就是:关注*2+收藏*2+对话*1)
 - add_article_collect_number(sub_article_collect_number)
   每次用户收藏(取消收藏)了一篇文章,就给这个文章的总收藏数加一(减一)
-- add_article_down_number(sub_article_down_number)
-  每次用户踩)取消踩了一篇文章,就给这个文章的总踩数加一(减一)
-- 余下类似,我就不一一解释了,都是以此类推,除了:
+- add_article_focus_number(sub_article_focus_number)
+  每次用户关注(取消关注)了一篇文章,就给这个文章的总关注数加一(减一)
 - update_dialog
   每次有新的私信就更新或者插入dialog表相关的记录
-- add_article_comment_number
-  注意没有与之相对的sub触发器!!sub这部分需要在php中实现!!
-  
