@@ -166,6 +166,7 @@ create table comment
    comment_down_number  int not null default 0 comment '评论踩的数量',
    comment_effective    bool not null default 1 comment '评论有效位',
    comment_type         int not null comment '评论类型',
+   comment_reply_number int default 0,
    primary key (comment_id)
 );
 
@@ -486,6 +487,7 @@ create table user
    user_last_time       timestamp not null default 0 comment '用户最后一次操作的时间戳(last_time)',
    user_type            int not null default 0 comment '用户类别',
    user_signature       char(32) comment '用户签名',
+   user_focus_number    int default 0,
    primary key (user_id)
 );
 
