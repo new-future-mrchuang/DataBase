@@ -74,7 +74,7 @@ create table belong_to_organization
 (
    organization_user_id int not null comment '组织id',
    user_id              int not null comment '用户id',
-   belong_to_organization_in_request bool not null default 1 comment '处于申请状态',
+   user_status bool not null default 1 comment '处于申请状态',
    belong_to_organization_info char(32) comment '用户在组织中的信息',
    primary key (organization_user_id, user_id)
 );
