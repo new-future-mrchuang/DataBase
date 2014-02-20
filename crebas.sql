@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/2/19 20:12:44                           */
+/* Created on:     2014/2/20 19:07:14                           */
 /*==============================================================*/
 
 
@@ -51,6 +51,8 @@ drop table if exists focus_on_article;
 drop table if exists focus_on_tag;
 
 drop table if exists focus_on_user;
+
+drop table if exists global_notice;
 
 drop table if exists message;
 
@@ -359,6 +361,17 @@ create table focus_on_user
 );
 
 alter table focus_on_user comment '¹Ø×¢ÓÃ»§';
+
+/*==============================================================*/
+/* Table: global_notice                                         */
+/*==============================================================*/
+create table global_notice
+(
+   global_notice_type   int,
+   global_notice_content text,
+   global_notice_time   timestamp,
+   global_notice_effective bool default 1
+);
 
 /*==============================================================*/
 /* Table: message                                               */

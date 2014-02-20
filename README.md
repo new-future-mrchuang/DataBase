@@ -41,6 +41,7 @@
 - dynamic                   记录动态的表
 - focus_on_article          记录谁关注了哪篇文章.
 - focus_on_user             记录谁关注了谁.
+- global_notice             记录了全局系统提醒,注意这张表*没有主键!!*
 - focus_on_tag              记录谁关注了什么标签.
 - message                   私信,其中的有效位用于屏蔽
 - notice                    系统消息(系统提醒),系统发给用户的提醒

@@ -278,6 +278,17 @@ create table focus_on_user
 alter table focus_on_user comment '关注用户';
 
 /*==============================================================*/
+/* Table: global_notice                                         */
+/*==============================================================*/
+create table global_notice
+(
+   global_notice_type   int,
+   global_notice_content text,
+   global_notice_time   timestamp,
+   global_notice_effective bool default 1
+);
+
+/*==============================================================*/
 /* Table: message                                               */
 /*==============================================================*/
 create table message
