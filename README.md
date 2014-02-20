@@ -1,6 +1,7 @@
 ##问题
 #belong_to_organization表
 - 1. belong_to_organization_in_request 改为 user_status
+-bool 建议改成tinyint
 
 ## 闯先生数据库模型   
 =======================================================
