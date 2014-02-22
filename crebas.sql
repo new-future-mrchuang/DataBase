@@ -1,8 +1,16 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/2/22 16:52:17                           */
+/* Created on:     2014/2/22 17:47:45                           */
 /*==============================================================*/
 
+
+drop trigger add_hits_article;
+
+drop trigger sub_hits_article;
+
+drop trigger add_hits_circle;
+
+drop trigger sub_hits_circle;
 
 drop trigger add_article_collect_number;
 
@@ -11,6 +19,10 @@ drop trigger sub_article_collect_number;
 drop trigger add_article_focus_number;
 
 drop trigger sub_article_focus_number;
+
+drop trigger add_tag_focus_number;
+
+drop trigger sub_tag_focus_number;
 
 drop trigger update_dialog;
 
@@ -165,7 +177,7 @@ create table belong_to_organization
 (
    organization_user_id int not null comment '组织id',
    user_id              int not null comment '用户id',
-   belong_to_organization_in_request bool not null default 1 comment '处于申请状态',
+   user_status          bool not null default 1 comment '处于申请状态',
    belong_to_organization_info char(32) comment '用户在组织中的信息',
    primary key (organization_user_id, user_id)
 );
@@ -570,7 +582,9 @@ create table tag
 (
    tag_id               int not null auto_increment comment '标签id',
    tag_title            char(32) not null comment '标签标题',
-   tag_hits             int not null default 0 comment '标签热度',
+   tag_circle_hits      int not null default 0,
+   tag_article_hits     int not null default 0,
+   tag_focus_number     int not null default 0 comment '标签热度',
    tag_profile          text comment '标签信息(备用)',
    primary key (tag_id)
 );
@@ -790,6 +804,42 @@ alter table up_comment add constraint FK_up_comment2 foreign key (comment_id)
       references comment (comment_id) on delete restrict on update restrict;
 
 
+create trigger add_hits_article after insert
+on article_have_tag for each row
+begin
+    update tag
+    set tag.tag_article_hits = tag.tag_article_hits+1
+    where tag.tag_id = new.tag_id
+end;
+
+
+create trigger sub_hits_article after delete
+on article_have_tag for each row
+begin
+    update tag
+    set tag.tag_article_hits = tag.tag_article_hits -1
+    where tag.tag_id = old.tag_id
+end;
+
+
+create trigger add_hits_circle after insert
+on circle_have_tag for each row
+begin
+    update tag
+    set tag.tag_circle_hits = tag.tag_circle_hits+1
+    where tag.tag_id = new.tag_id
+end;
+
+
+create trigger sub_hits_circle after delete
+on circle_have_tag for each row
+begin
+    update tag
+    set tag.tag_circle_hits = tag.tag_circle_hits - 1
+    where tag.tag_id = old.tag_id
+end;
+
+
 create trigger add_article_collect_number after insert
 on collect_article for each row
 begin
@@ -823,6 +873,24 @@ begin
     update article
     set article.article_focus_number = article.article_focus_number-1
     where article.article_id = old.article_id
+end;
+
+
+create trigger add_tag_focus_number after insert
+on focus_on_tag for each row
+begin
+    update tag
+    set tag.tag_focus_number = tag.tag_focus_number + 1
+    where tag.tag_id = new.tag_id
+end;
+
+
+create trigger sub_tag_focus_number after delete
+on focus_on_tag for each row
+begin
+    update tag
+    set tag.tag_focus_number = tag.tag_focus_number - 1
+    where tag.tag_id = old.tag_id
 end;
 
 

@@ -74,7 +74,7 @@ create table belong_to_organization
 (
    organization_user_id int not null comment '组织id',
    user_id              int not null comment '用户id',
-   belong_to_organization_in_request bool not null default 1 comment '处于申请状态',
+   user_status          bool not null default 1 comment '处于申请状态',
    belong_to_organization_info char(32) comment '用户在组织中的信息',
    primary key (organization_user_id, user_id)
 );
@@ -479,7 +479,9 @@ create table tag
 (
    tag_id               int not null auto_increment comment '标签id',
    tag_title            char(32) not null comment '标签标题',
-   tag_hits             int not null default 0 comment '标签热度',
+   tag_circle_hits      int not null default 0,
+   tag_article_hits     int not null default 0,
+   tag_focus_number     int not null default 0 comment '标签热度',
    tag_profile          text comment '标签信息(备用)',
    primary key (tag_id)
 );
