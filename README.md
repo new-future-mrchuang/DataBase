@@ -7,7 +7,7 @@
 =======================================================
 ### 目前版本状态
 目前是一个初期来说比较完整的模型了.   
-如果要测试,请使用utf8_general_ci编码.随后按顺序导入crebas.sql和trigger.sql.
+如果要测试,请使用utf8_general_ci编码.随后按顺序导入crebas.sql,trigger.sql.(init.sql可以不导入,也可以导入)
 其他详情请烦见cdm和pdm.   
 
 ----------------------------------------   
@@ -30,6 +30,8 @@
 - block                     黑名单,记录了哪个用户屏蔽了谁
 - category                  组织的类别,包含了权限和简介
 - circle                    圈子,包含了人数上限
+- circle_have_tag           记录圈子的标签
+- circle_invitation         圈子邀请码
 - collect_article           收藏文章(收藏项目政策啥的都在这个里面了)
 - comment                   评论
 - config                    系统设置
@@ -38,23 +40,26 @@
 - down_comment              对评论点踩
 - dynamic                   记录动态的表
 - focus_on_article          记录谁关注了哪篇文章.
+- focus_on_tag              记录谁关注了哪个tag
 - focus_on_user             记录谁关注了谁.
 - global_notice             记录了全局系统提醒,注意这张表*没有主键!!*
-- focus_on_tag              记录谁关注了什么标签.
+- invitation                记录网站邀请码的表
 - message                   私信,其中的有效位用于屏蔽
 - notice                    系统消息(系统提醒),系统发给用户的提醒
 - organization              组织,是用户的子类表,customize是增值服务部分,这部分注释比较清楚了
+- person                    记录了个人的详细信息
 - policy                    政策,没啥说的
 - post                      指的是帖子(圈子中的文章),类型字段用于标识是活动还是群聊还是纯粹的帖子
 - project                   项目,有访问量的记录,有头像,记录了属于哪个组织.
 - question                  问题
 - report_article            举报文章,参照知乎的举报进行设计,当类型为其他时,用户可以自行填写举报内容
 - report_comment            举报评论,参上一条解释
+- report_second_comment     举报二级评论,参上一条解释
+- second_comment            二级评论,应邓茜的要求而加入
 - tag                       标签
 - up_article                用户对文章点赞的记录
 - up_comment                用户对评论点赞的记录
 - user                      用户,目前没有加入个人用户的详细信息
-- person                    个人用户的详细信息
 - validate                  记录每个用户的验证密码
 
 ### 每个触发器的说明(一共就5个触发器了现在,就是:关注*2+收藏*2+对话*1)
@@ -71,3 +76,11 @@
 - 2->不友善内容       
 - 3->违法违规内容       
 - 4->不宜公开讨论的政治内容      
+
+### category中不同数字和类别的对应
+1->创业团队
+2->认证公司
+3->风投机构
+4->孵化器
+5->特邀企业
+6->政府部门

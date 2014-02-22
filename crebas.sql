@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/2/22 17:47:45                           */
+/* Created on:     2014/2/22 18:21:16                           */
 /*==============================================================*/
 
 
@@ -89,6 +89,12 @@ drop table if exists question;
 drop table if exists report_article;
 
 drop table if exists report_comment;
+
+drop index report_second_comment2_FK on report_second_comment;
+
+drop index report_second_comment_FK on report_second_comment;
+
+drop table if exists report_second_comment;
 
 drop table if exists second_comment;
 
@@ -225,6 +231,7 @@ create table circle
    circle_avatar_url    char(128) comment '圈子头像url',
    circle_effective     bool not null default 1 comment '圈子有效位',
    circle_number        int not null default 1,
+   circle_tags          char(10),
    primary key (circle_id)
 );
 
@@ -249,7 +256,7 @@ create table circle_invitation
 (
    circle_id            int not null,
    circle_invitation_code char(8),
-   circle_invitation_time timestamp,
+   circle_invitation_time timestamp default CURRENT_TIMESTAMP,
    circle_invitation_effective bool default 1
 );
 
@@ -398,7 +405,7 @@ create table global_notice
 (
    global_notice_type   int,
    global_notice_content text,
-   global_notice_time   timestamp,
+   global_notice_time   timestamp default CURRENT_TIMESTAMP,
    global_notice_effective bool default 1
 );
 
@@ -410,7 +417,7 @@ create table invitation
    invitation_code      char(8),
    invitation_effective bool default 1,
    invitation_type      int,
-   invitation_time      timestamp
+   invitation_time      timestamp default CURRENT_TIMESTAMP
 );
 
 /*==============================================================*/
@@ -562,6 +569,34 @@ create table report_comment
 alter table report_comment comment '举报评论';
 
 /*==============================================================*/
+/* Table: report_second_comment                                 */
+/*==============================================================*/
+create table report_second_comment
+(
+   user_id              int not null,
+   second_comment_id    int not null,
+   report_second_comment_type int not null,
+   report_second_comment_content text,
+   primary key (user_id, second_comment_id)
+);
+
+/*==============================================================*/
+/* Index: report_second_comment_FK                              */
+/*==============================================================*/
+create index report_second_comment_FK on report_second_comment
+(
+   user_id
+);
+
+/*==============================================================*/
+/* Index: report_second_comment2_FK                             */
+/*==============================================================*/
+create index report_second_comment2_FK on report_second_comment
+(
+   second_comment_id
+);
+
+/*==============================================================*/
 /* Table: second_comment                                        */
 /*==============================================================*/
 create table second_comment
@@ -569,7 +604,7 @@ create table second_comment
    second_comment_id    int not null,
    user_id              int not null,
    comment_id           int not null,
-   second_comment_time  timestamp,
+   second_comment_time  timestamp default CURRENT_TIMESTAMP,
    second_comment_content text,
    user_reply_to_id     int,
    primary key (second_comment_id)
@@ -784,6 +819,12 @@ alter table report_comment add constraint FK_report_comment foreign key (user_id
 
 alter table report_comment add constraint FK_report_comment2 foreign key (comment_id)
       references comment (comment_id) on delete restrict on update restrict;
+
+alter table report_second_comment add constraint FK_report_second_comment foreign key (user_id)
+      references user (user_id) on delete restrict on update restrict;
+
+alter table report_second_comment add constraint FK_report_second_comment2 foreign key (second_comment_id)
+      references second_comment (second_comment_id) on delete restrict on update restrict;
 
 alter table second_comment add constraint FK_post_second_comment foreign key (user_id)
       references user (user_id) on delete restrict on update restrict;
