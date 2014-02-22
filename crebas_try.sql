@@ -34,7 +34,7 @@ create table article
    article_type         int not null comment '文章类型',
    article_comment_number int not null default 0 comment '文章总评论数',
    article_hits         int not null default 0 comment '文章点击量',
-   article_tags         text,   
+   article_tags         text,
    primary key (article_id)
 );
 
@@ -74,7 +74,7 @@ create table belong_to_organization
 (
    organization_user_id int not null comment '组织id',
    user_id              int not null comment '用户id',
-   user_status bool not null default 1 comment '处于申请状态',
+   belong_to_organization_in_request bool not null default 1 comment '处于申请状态',
    belong_to_organization_info char(32) comment '用户在组织中的信息',
    primary key (organization_user_id, user_id)
 );
@@ -140,6 +140,17 @@ create table circle_have_tag
 alter table circle_have_tag comment '圈子具有标签';
 
 /*==============================================================*/
+/* Table: circle_invitation                                     */
+/*==============================================================*/
+create table circle_invitation
+(
+   circle_id            int not null,
+   circle_invitation_code char(8),
+   circle_invitation_time timestamp,
+   circle_invitation_effective bool default 1
+);
+
+/*==============================================================*/
 /* Table: collect_article                                       */
 /*==============================================================*/
 create table collect_article
@@ -157,7 +168,6 @@ alter table collect_article comment '收藏';
 create table comment
 (
    comment_id           int not null auto_increment comment '评论id',
-   comment_id_reply_to  int comment '被评论id',
    user_id              int not null comment '发表评论的用户的id',
    article_id           int not null comment '文章id',
    comment_time         timestamp not null default CURRENT_TIMESTAMP comment '评论发布时间',
@@ -166,7 +176,7 @@ create table comment
    comment_down_number  int not null default 0 comment '评论踩的数量',
    comment_effective    bool not null default 1 comment '评论有效位',
    comment_type         int not null comment '评论类型',
-   comment_reply_number int default 0,
+   comment_second_comment_number int not null default 0,
    primary key (comment_id)
 );
 
@@ -290,6 +300,17 @@ create table global_notice
 );
 
 /*==============================================================*/
+/* Table: invitation                                            */
+/*==============================================================*/
+create table invitation
+(
+   invitation_code      char(8),
+   invitation_effective bool default 1,
+   invitation_type      int,
+   invitation_time      timestamp
+);
+
+/*==============================================================*/
 /* Table: message                                               */
 /*==============================================================*/
 create table message
@@ -317,6 +338,7 @@ create table notice
    user_id              int not null comment '用户id',
    notice_type          int not null comment '提醒类型',
    notice_read          bool not null default 0 comment '提醒已读',
+   notice_title         char(100),
    notice_content       text not null comment '提醒内容',
    notice_time          timestamp not null default CURRENT_TIMESTAMP comment '提醒插入数据库的时间',
    notice_effective     bool not null default 1 comment '提醒有效',
@@ -349,8 +371,11 @@ create table person
    user_id              int not null comment '用户id',
    user_sex             char(8) not null comment '用户性别',
    user_location        char(64) comment '用户所在地',
-   user_experience      text comment '用户经历',
    user_birthday        date comment '用户生日',
+   user_education_experience text,
+   user_career_experience text,
+   user_startup_point   text,
+   user_business        text,
    primary key (user_id)
 );
 
@@ -434,13 +459,27 @@ create table report_comment
 alter table report_comment comment '举报评论';
 
 /*==============================================================*/
+/* Table: second_comment                                        */
+/*==============================================================*/
+create table second_comment
+(
+   second_comment_id    int not null,
+   user_id              int not null,
+   comment_id           int not null,
+   second_comment_time  timestamp,
+   second_comment_content text,
+   user_reply_to_id     int,
+   primary key (second_comment_id)
+);
+
+/*==============================================================*/
 /* Table: tag                                                   */
 /*==============================================================*/
 create table tag
 (
    tag_id               int not null auto_increment comment '标签id',
    tag_title            char(32) not null comment '标签标题',
-   tag_hits             bigint not null default 0 comment '标签热度',
+   tag_hits             int not null default 0 comment '标签热度',
    tag_profile          text comment '标签信息(备用)',
    primary key (tag_id)
 );
@@ -542,6 +581,9 @@ alter table circle_have_tag add constraint FK_circle_have_tag foreign key (circl
 alter table circle_have_tag add constraint FK_circle_have_tag2 foreign key (tag_id)
       references tag (tag_id) on delete restrict on update restrict;
 
+alter table circle_invitation add constraint FK_circle_have_invitation foreign key (circle_id)
+      references circle (circle_id) on delete restrict on update restrict;
+
 alter table collect_article add constraint FK_collect_article foreign key (article_id)
       references article (article_id) on delete restrict on update restrict;
 
@@ -553,9 +595,6 @@ alter table comment add constraint FK_comment_belong_to_article foreign key (art
 
 alter table comment add constraint FK_post_comment foreign key (user_id)
       references user (user_id) on delete restrict on update restrict;
-
-alter table comment add constraint FK_reply foreign key (comment_id_reply_to)
-      references comment (comment_id) on delete restrict on update restrict;
 
 alter table dialog add constraint FK_dialog foreign key (user_id_less)
       references user (user_id) on delete restrict on update restrict;
@@ -641,6 +680,12 @@ alter table report_comment add constraint FK_report_comment foreign key (user_id
 alter table report_comment add constraint FK_report_comment2 foreign key (comment_id)
       references comment (comment_id) on delete restrict on update restrict;
 
+alter table second_comment add constraint FK_post_second_comment foreign key (user_id)
+      references user (user_id) on delete restrict on update restrict;
+
+alter table second_comment add constraint FK_second_comment_belong_to_comment foreign key (comment_id)
+      references comment (comment_id) on delete restrict on update restrict;
+
 alter table up_article add constraint FK_up_article foreign key (article_id)
       references article (article_id) on delete restrict on update restrict;
 
@@ -653,14 +698,14 @@ alter table up_comment add constraint FK_up_comment foreign key (user_id)
 alter table up_comment add constraint FK_up_comment2 foreign key (comment_id)
       references comment (comment_id) on delete restrict on update restrict;
 
-ALTER TABLE `category`     AUTO_INCREMENT =  66011137    ; -- [ 66011137  , 66027520   ] 
-ALTER TABLE `admin`        AUTO_INCREMENT =  66027521    ; -- [ 66027521  , 66043904   ]
-ALTER TABLE `config`       AUTO_INCREMENT =  66043905    ; -- [ 66043905  , 66060288   ] 
-ALTER TABLE `tag`          AUTO_INCREMENT =  66060289    ; -- [ 66060289  , 67108864   ]
-ALTER TABLE `circle`       AUTO_INCREMENT =  67108865    ; -- [ 67108865  , 134217728  ]
-ALTER TABLE `user`         AUTO_INCREMENT =  134217729   ; -- [ 134217729 , 201326592  ]
-ALTER TABLE `article`      AUTO_INCREMENT =  201326593   ; -- [ 201326593 , 268435456  ]
-ALTER TABLE `message`      AUTO_INCREMENT =  268435457   ; -- [ 268435457 , 536870912  ]
-ALTER TABLE `comment`      AUTO_INCREMENT =  536870913   ; -- [ 536870913 , 805306368  ]
-ALTER TABLE `notice`       AUTO_INCREMENT =  805306369   ; -- [ 805306369 , 1073741824 ]
-ALTER TABLE `dynamic`      AUTO_INCREMENT =  1073741825  ; -- [ 1073741825, 2147483648 ]
+-- ALTER TABLE `category`     AUTO_INCREMENT =  66011137    ; -- [ 66011137  , 66027520   ] 
+-- ALTER TABLE `admin`        AUTO_INCREMENT =  66027521    ; -- [ 66027521  , 66043904   ]
+-- ALTER TABLE `config`       AUTO_INCREMENT =  66043905    ; -- [ 66043905  , 66060288   ] 
+-- ALTER TABLE `tag`          AUTO_INCREMENT =  66060289    ; -- [ 66060289  , 67108864   ]
+-- ALTER TABLE `circle`       AUTO_INCREMENT =  67108865    ; -- [ 67108865  , 134217728  ]
+-- ALTER TABLE `user`         AUTO_INCREMENT =  134217729   ; -- [ 134217729 , 201326592  ]
+-- ALTER TABLE `article`      AUTO_INCREMENT =  201326593   ; -- [ 201326593 , 268435456  ]
+-- ALTER TABLE `message`      AUTO_INCREMENT =  268435457   ; -- [ 268435457 , 536870912  ]
+-- ALTER TABLE `comment`      AUTO_INCREMENT =  536870913   ; -- [ 536870913 , 805306368  ]
+-- ALTER TABLE `notice`       AUTO_INCREMENT =  805306369   ; -- [ 805306369 , 1073741824 ]
+-- ALTER TABLE `dynamic`      AUTO_INCREMENT =  1073741825  ; -- [ 1073741825, 2147483648 ]
