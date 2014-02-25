@@ -1,4 +1,113 @@
-﻿
+/*==============================================================*/
+/* DBMS name:      MySQL 5.0                                    */
+/* Created on:     2014/2/25 19:34:02                           */
+/*==============================================================*/
+
+
+drop trigger add_hits_article;
+
+drop trigger sub_hits_article;
+
+drop trigger add_hits_circle;
+
+drop trigger sub_hits_circle;
+
+drop trigger add_article_collect_number;
+
+drop trigger sub_article_collect_number;
+
+drop trigger add_article_focus_number;
+
+drop trigger sub_article_focus_number;
+
+drop trigger add_tag_focus_number;
+
+drop trigger sub_tag_focus_number;
+
+drop trigger update_dialog;
+
+drop table if exists admin;
+
+drop table if exists article;
+
+drop table if exists article_have_tag;
+
+drop table if exists belong_to_circle;
+
+drop table if exists belong_to_organization;
+
+drop table if exists block;
+
+drop table if exists category;
+
+drop table if exists circle;
+
+drop table if exists circle_have_tag;
+
+drop table if exists circle_invitation;
+
+drop table if exists collect_article;
+
+drop table if exists comment;
+
+drop table if exists config;
+
+drop table if exists dialog;
+
+drop table if exists down_article;
+
+drop table if exists down_comment;
+
+drop table if exists dynamic;
+
+drop table if exists focus_on_article;
+
+drop table if exists focus_on_tag;
+
+drop table if exists focus_on_user;
+
+drop table if exists global_notice;
+
+drop table if exists invitation;
+
+drop table if exists message;
+
+drop table if exists notice;
+
+drop table if exists organization;
+
+drop table if exists person;
+
+drop table if exists policy;
+
+drop table if exists post;
+
+drop table if exists project;
+
+drop table if exists question;
+
+drop table if exists report_article;
+
+drop table if exists report_comment;
+
+drop index report_second_comment2_FK on report_second_comment;
+
+drop index report_second_comment_FK on report_second_comment;
+
+drop table if exists report_second_comment;
+
+drop table if exists second_comment;
+
+drop table if exists tag;
+
+drop table if exists up_article;
+
+drop table if exists up_comment;
+
+drop table if exists user;
+
+drop table if exists validate;
+
 /*==============================================================*/
 /* Table: admin                                                 */
 /*==============================================================*/
@@ -555,7 +664,7 @@ create table user
    user_profile         text comment '用户简介',
    user_avatar_url      char(128) comment '用户头像url',
    user_effective       bool not null default 1 comment '用户有效位',
-   user_last_time       timestamp not null default 0 comment '用户最后一次操作的时间戳(last_time)',
+   user_last_time       timestamp not null default '0' comment '用户最后一次操作的时间戳(last_time)',
    user_type            int not null default 0 comment '用户类别',
    user_signature       char(32) comment '用户签名',
    user_focus_number    int default 0,
@@ -740,14 +849,107 @@ alter table up_comment add constraint FK_up_comment2 foreign key (comment_id)
       references comment (comment_id) on delete restrict on update restrict;
 
 
--- ALTER TABLE `category`     AUTO_INCREMENT =  66011137    ; -- [ 66011137  , 66027520   ] 
--- ALTER TABLE `admin`        AUTO_INCREMENT =  66027521    ; -- [ 66027521  , 66043904   ]
--- ALTER TABLE `config`       AUTO_INCREMENT =  66043905    ; -- [ 66043905  , 66060288   ] 
--- ALTER TABLE `tag`          AUTO_INCREMENT =  66060289    ; -- [ 66060289  , 67108864   ]
--- ALTER TABLE `circle`       AUTO_INCREMENT =  67108865    ; -- [ 67108865  , 134217728  ]
--- ALTER TABLE `user`         AUTO_INCREMENT =  134217729   ; -- [ 134217729 , 201326592  ]
--- ALTER TABLE `article`      AUTO_INCREMENT =  201326593   ; -- [ 201326593 , 268435456  ]
--- ALTER TABLE `message`      AUTO_INCREMENT =  268435457   ; -- [ 268435457 , 536870912  ]
--- ALTER TABLE `comment`      AUTO_INCREMENT =  536870913   ; -- [ 536870913 , 805306368  ]
--- ALTER TABLE `notice`       AUTO_INCREMENT =  805306369   ; -- [ 805306369 , 1073741824 ]
--- ALTER TABLE `dynamic`      AUTO_INCREMENT =  1073741825  ; -- [ 1073741825, 2147483648 ]
+create trigger add_hits_article after insert
+on article_have_tag for each row
+begin
+    update tag
+    set tag.tag_article_hits = tag.tag_article_hits+1
+    where tag.tag_id = new.tag_id
+end;
+
+
+create trigger sub_hits_article after delete
+on article_have_tag for each row
+begin
+    update tag
+    set tag.tag_article_hits = tag.tag_article_hits -1
+    where tag.tag_id = old.tag_id
+end;
+
+
+create trigger add_hits_circle after insert
+on circle_have_tag for each row
+begin
+    update tag
+    set tag.tag_circle_hits = tag.tag_circle_hits+1
+    where tag.tag_id = new.tag_id
+end;
+
+
+create trigger sub_hits_circle after delete
+on circle_have_tag for each row
+begin
+    update tag
+    set tag.tag_circle_hits = tag.tag_circle_hits - 1
+    where tag.tag_id = old.tag_id
+end;
+
+
+create trigger add_article_collect_number after insert
+on collect_article for each row
+begin
+    update article
+    set article.article_collect_number = article.article_collect_number+1
+    where article.article_id = new.article_id
+end;
+
+
+create trigger sub_article_collect_number after delete
+on collect_article for each row
+begin
+    update article
+    set article.article_collect_number = article.article_collect_number-1
+    where article.article_id = old.article_id
+end;
+
+
+create trigger add_article_focus_number after insert
+on focus_on_article for each row
+begin
+    update article
+    set article.article_focus_number = article.article_focus_number+1
+    where article.article_id = new.article_id
+end;
+
+
+create trigger sub_article_focus_number after delete
+on focus_on_article for each row
+begin
+    update article
+    set article.article_focus_number = article.article_focus_number-1
+    where article.article_id = old.article_id
+end;
+
+
+create trigger add_tag_focus_number after insert
+on focus_on_tag for each row
+begin
+    update tag
+    set tag.tag_focus_number = tag.tag_focus_number + 1
+    where tag.tag_id = new.tag_id
+end;
+
+
+create trigger sub_tag_focus_number after delete
+on focus_on_tag for each row
+begin
+    update tag
+    set tag.tag_focus_number = tag.tag_focus_number - 1
+    where tag.tag_id = old.tag_id
+end;
+
+
+create trigger update_dialog after insert
+on message for each row
+begin
+    set @l=if(new.send_user_id<new.receive_user_id,
+              new.send_user_id,new.receive_user_id);
+    set @m=if(new.send_user_id>new.receive_user_id,
+              new.send_user_id,new.receive_user_id);
+              
+    insert into dialog(dialog_time,dialog_content,user_id_less,user_id_more)
+    value(new.message_time, new.message_content, @l, @m)
+    on duplicate key update dialog_time=new.message_time,
+        dialog.dialog_content=new.message_content
+end;
+

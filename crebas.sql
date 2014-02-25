@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/2/22 18:21:16                           */
+/* Created on:     2014/2/25 19:34:02                           */
 /*==============================================================*/
 
 
@@ -132,7 +132,7 @@ create table article
    user_id              int not null comment '用户id',
    article_title        char(32) not null comment '文章标题',
    article_time         timestamp not null default CURRENT_TIMESTAMP comment '文章发布时间',
-   article_content      text not null comment '文章内容',
+   article_content      text comment '文章内容',
    article_profile      text not null comment '文章简介',
    article_effective    bool not null default 1 comment '文章有效',
    article_draft        bool not null default 0 comment '文章是草稿吗',
@@ -497,6 +497,7 @@ alter table person comment '个人用户的详细信息';
 create table policy
 (
    article_id           int not null comment '文章id',
+   user_id              int not null,
    primary key (article_id)
 );
 
@@ -789,6 +790,9 @@ alter table organization add constraint FK_organization_isa_user foreign key (us
 
 alter table person add constraint FK_user_details_isa_user foreign key (user_id)
       references user (user_id) on delete restrict on update restrict;
+
+alter table policy add constraint FK_policy_belong_to_organization foreign key (user_id)
+      references organization (user_id) on delete restrict on update restrict;
 
 alter table policy add constraint FK_policy_isa_article foreign key (article_id)
       references article (article_id) on delete restrict on update restrict;
