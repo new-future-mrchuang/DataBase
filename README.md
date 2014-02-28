@@ -1,13 +1,15 @@
-##问题
-#belong_to_organization表
-- 1. belong_to_organization_in_request 改为 user_status
--bool 建议改成tinyint
-
-## 闯先生数据库模型   
-=======================================================
+## 问题
+## 闯先生数据库模型    
+=======================================================    
 ### 目前版本状态
 目前是一个初期来说比较完整的模型了.   
-如果要测试,请使用utf8_general_ci编码.随后按顺序导入crebas.sql,trigger.sql.(init.sql可以不导入,也可以导入)
+如果要使用phpmyadmin测试,请不要手动建立数据库,而是直接按顺序导入crebas.sql,trigger.sql   
+如果在lamp环境下测试,请:   
+    #mysql   
+    mysql > source crebas_try.sql;   
+    ......   
+    mysql > source trigger.sql;   
+即可.
 其他详情请烦见cdm和pdm.   
 
 ----------------------------------------   
@@ -77,7 +79,7 @@
 - 3->违法违规内容       
 - 4->不宜公开讨论的政治内容      
 
-### category中不同数字和类别的对应
+### category中不同数字(也就是id)和类别的对应
 1->创业团队
 2->认证公司
 3->风投机构

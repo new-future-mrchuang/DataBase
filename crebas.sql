@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/2/25 19:34:02                           */
+/* Created on:     2014/2/28 15:30:16                           */
 /*==============================================================*/
 
 
@@ -130,7 +130,7 @@ create table article
 (
    article_id           int not null auto_increment comment '文章id',
    user_id              int not null comment '用户id',
-   article_title        char(32) not null comment '文章标题',
+   article_title        char(64) not null comment '文章标题',
    article_time         timestamp not null default CURRENT_TIMESTAMP comment '文章发布时间',
    article_content      text comment '文章内容',
    article_profile      text not null comment '文章简介',
@@ -602,7 +602,7 @@ create index report_second_comment2_FK on report_second_comment
 /*==============================================================*/
 create table second_comment
 (
-   second_comment_id    int not null,
+   second_comment_id    int not null auto_increment,
    user_id              int not null,
    comment_id           int not null,
    second_comment_time  timestamp default CURRENT_TIMESTAMP,

@@ -1,4 +1,6 @@
-﻿
+﻿create database mrchuang character set utf8;
+use mrchuang;
+
 /*==============================================================*/
 /* Table: admin                                                 */
 /*==============================================================*/
@@ -21,7 +23,7 @@ create table article
 (
    article_id           int not null auto_increment comment '文章id',
    user_id              int not null comment '用户id',
-   article_title        char(32) not null comment '文章标题',
+   article_title        char(64) not null comment '文章标题',
    article_time         timestamp not null default CURRENT_TIMESTAMP comment '文章发布时间',
    article_content      text comment '文章内容',
    article_profile      text not null comment '文章简介',
@@ -493,7 +495,7 @@ create index report_second_comment2_FK on report_second_comment
 /*==============================================================*/
 create table second_comment
 (
-   second_comment_id    int not null,
+   second_comment_id    int not null auto_increment,
    user_id              int not null,
    comment_id           int not null,
    second_comment_time  timestamp default CURRENT_TIMESTAMP,
@@ -739,15 +741,15 @@ alter table up_comment add constraint FK_up_comment foreign key (user_id)
 alter table up_comment add constraint FK_up_comment2 foreign key (comment_id)
       references comment (comment_id) on delete restrict on update restrict;
 
-
--- ALTER TABLE `category`     AUTO_INCREMENT =  66011137    ; -- [ 66011137  , 66027520   ] 
--- ALTER TABLE `admin`        AUTO_INCREMENT =  66027521    ; -- [ 66027521  , 66043904   ]
--- ALTER TABLE `config`       AUTO_INCREMENT =  66043905    ; -- [ 66043905  , 66060288   ] 
--- ALTER TABLE `tag`          AUTO_INCREMENT =  66060289    ; -- [ 66060289  , 67108864   ]
--- ALTER TABLE `circle`       AUTO_INCREMENT =  67108865    ; -- [ 67108865  , 134217728  ]
--- ALTER TABLE `user`         AUTO_INCREMENT =  134217729   ; -- [ 134217729 , 201326592  ]
--- ALTER TABLE `article`      AUTO_INCREMENT =  201326593   ; -- [ 201326593 , 268435456  ]
--- ALTER TABLE `message`      AUTO_INCREMENT =  268435457   ; -- [ 268435457 , 536870912  ]
--- ALTER TABLE `comment`      AUTO_INCREMENT =  536870913   ; -- [ 536870913 , 805306368  ]
--- ALTER TABLE `notice`       AUTO_INCREMENT =  805306369   ; -- [ 805306369 , 1073741824 ]
--- ALTER TABLE `dynamic`      AUTO_INCREMENT =  1073741825  ; -- [ 1073741825, 2147483648 ]
+ALTER TABLE `dynamic`        AUTO_INCREMENT =  1073741825  ; -- [ 1073741825 , 2147483648 ]
+ALTER TABLE `notice`         AUTO_INCREMENT =  805306369   ; -- [ 805306369  , 1073741824 ]
+ALTER TABLE `comment`        AUTO_INCREMENT =  671088641   ; -- [ 671088641  , 805306368  ]
+ALTER TABLE `message`        AUTO_INCREMENT =  536870913   ; -- [ 536870913  , 671088640  ]
+ALTER TABLE `second_comment` AUTO_INCREMENT =  268435457   ; -- [ 268435457  , 536870912  ]
+ALTER TABLE `article`        AUTO_INCREMENT =  201326593   ; -- [ 201326593  , 268435456  ]
+ALTER TABLE `user`           AUTO_INCREMENT =  134217729   ; -- [ 134217729  , 201326592  ]
+ALTER TABLE `circle`         AUTO_INCREMENT =  67108865    ; -- [ 67108865   , 134217728  ]
+ALTER TABLE `tag`            AUTO_INCREMENT =  66060289    ; -- [ 66060289   , 67108864   ]
+ALTER TABLE `config`         AUTO_INCREMENT =  66043905    ; -- [ 66043905   , 66060288   ]
+ALTER TABLE `admin`          AUTO_INCREMENT =  66027521    ; -- [ 66027521   , 66043904   ]
+ALTER TABLE `category`       AUTO_INCREMENT =  1           ; -- [        1   , 6          ]
