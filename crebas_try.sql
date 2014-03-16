@@ -36,8 +36,8 @@ create table article
    article_type         int not null comment '文章类型',
    article_comment_number int not null default 0 comment '文章总评论数',
    article_hits         int not null default 0 comment '文章点击量',
-   article_tags         text,
-   article_pic_url      char(2048),
+   article_tags         text comment '标签',
+   article_picture_url  char(2048) comment '图像url',
    primary key (article_id)
 );
 
@@ -391,6 +391,7 @@ alter table person comment '个人用户的详细信息';
 create table policy
 (
    article_id           int not null comment '文章id',
+   policy_url           char(2048),
  #  user_id              int not null,
    primary key (article_id)
 );
@@ -417,7 +418,7 @@ alter table post comment '圈子里的帖子(post)';
 create table project
 (
    article_id           int not null comment '文章id',
-   user_id              int not null comment '关联组织的user_id',
+   #user_id              int not null comment '关联组织的user_id',
    project_avatar_url   char(128) not null comment '项目头像图片',
    primary key (article_id)
 );
